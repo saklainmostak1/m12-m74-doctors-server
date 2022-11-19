@@ -43,8 +43,6 @@ async function run(){
 
         const doctorsCollection = client.db('doctorsPortal').collection('doctors')
 
-<<<<<<< HEAD
-=======
 
         const verifyAdmin = async(req, res, next) =>{
             console.log('admin verify',req.decoded.email);
@@ -58,7 +56,6 @@ async function run(){
             }
             next()
         }
->>>>>>> b74dea2 (push)
 
         app.get('/appointmentOptions', async (req , res) =>{
             const date = req.query.date
@@ -121,12 +118,6 @@ async function run(){
         //     ]).toArray()
         //     res.send(options)
         // })
-
-        app.get('/appointmentSpecialty', async(req, res)=>{
-            const query = {}
-            const result = await appointmentOptionCollection.find(query).project({name: 1}).toArray()
-            res.send(result)
-        })
 
         app.get('/bookings',verifyJWT, async(req, res) =>{
             const email = req.query.email
@@ -203,27 +194,21 @@ async function run(){
             const result = await usersCollection.updateOne(filter, updatedDoc, options)
             res.send(result)
         })
-<<<<<<< HEAD
-        app.get('/doctors', async(req, res)=>{
-=======
         app.get('/doctors',verifyJWT,verifyAdmin, async(req, res)=>{
->>>>>>> b74dea2 (push)
             const query = {}
             const doctors = await doctorsCollection.find(query).toArray()
             res.send(doctors)
         })
 
-<<<<<<< HEAD
-        app.post('/doctors', async(req, res) =>{
-=======
         app.post('/doctors',verifyJWT, verifyAdmin, async(req, res) =>{
->>>>>>> b74dea2 (push)
             const doctor = req.body;
             const result = await doctorsCollection.insertOne(doctor)
             res.send(result)
         })
-<<<<<<< HEAD
-=======
+
+
+
+        // jsdghj
 
         app.delete('/doctors/:id', verifyJWT, verifyAdmin, async(req, res)=>{
             const id = req.params.id
@@ -231,7 +216,6 @@ async function run(){
             const result = await doctorsCollection.deleteOne(filter)
             res.send(result)
         })
->>>>>>> b74dea2 (push)
 
 
 
