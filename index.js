@@ -43,6 +43,22 @@ async function run(){
 
         const doctorsCollection = client.db('doctorsPortal').collection('doctors')
 
+<<<<<<< HEAD
+=======
+
+        const verifyAdmin = async(req, res, next) =>{
+            console.log('admin verify',req.decoded.email);
+            const decodedEmail = req.decoded.email
+            const query = {
+                email: decodedEmail
+            }
+            const user = await usersCollection.findOne(query)
+            if(user.role !== 'admin'){
+               return res.status(403).send({message: 'forbiden access'})
+            }
+            next()
+        }
+>>>>>>> b74dea2 (push)
 
         app.get('/appointmentOptions', async (req , res) =>{
             const date = req.query.date
@@ -174,15 +190,8 @@ async function run(){
             const user = await usersCollection.findOne(query)
             res.send({isAdmin: user?.role === 'admin'})
         })
-        app.put('/users/admin/:id',verifyJWT, async(req, res)=>{
-            const decodedEmail = req.decoded.email
-            const query = {
-                email: decodedEmail
-            }
-            const user = await usersCollection.findOne(query)
-            if(user.role !== 'admin'){
-               return res.status(403).send({message: 'forbiden access'})
-            }
+        app.put('/users/admin/:id',verifyJWT,verifyAdmin, async(req, res)=>{
+           
             const id = req.params.id
             const filter = {_id: ObjectId(id)}
             const options = {upsert: true} 
@@ -194,17 +203,35 @@ async function run(){
             const result = await usersCollection.updateOne(filter, updatedDoc, options)
             res.send(result)
         })
+<<<<<<< HEAD
         app.get('/doctors', async(req, res)=>{
+=======
+        app.get('/doctors',verifyJWT,verifyAdmin, async(req, res)=>{
+>>>>>>> b74dea2 (push)
             const query = {}
             const doctors = await doctorsCollection.find(query).toArray()
             res.send(doctors)
         })
 
+<<<<<<< HEAD
         app.post('/doctors', async(req, res) =>{
+=======
+        app.post('/doctors',verifyJWT, verifyAdmin, async(req, res) =>{
+>>>>>>> b74dea2 (push)
             const doctor = req.body;
             const result = await doctorsCollection.insertOne(doctor)
             res.send(result)
         })
+<<<<<<< HEAD
+=======
+
+        app.delete('/doctors/:id', verifyJWT, verifyAdmin, async(req, res)=>{
+            const id = req.params.id
+            const filter = {_id: ObjectId(id)}
+            const result = await doctorsCollection.deleteOne(filter)
+            res.send(result)
+        })
+>>>>>>> b74dea2 (push)
 
 
 
